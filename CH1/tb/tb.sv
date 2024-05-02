@@ -26,15 +26,15 @@ module tb;
       $display("FAIL: NOT Gate mismatch");
       $stop;
     end
-    if (&SW[1:0] !== LED[1]) begin
+    if (~&SW[1:0] !== LED[1]) begin // original code: if (&SW[1:0] !== LED[1]) begin
       $display("FAIL: AND Gate mismatch");
       $stop;
     end
-    if (|SW[1:0] !== LED[2]) begin
+    if (~|SW[1:0] !== LED[2]) begin // if (|SW[1:0] !== LED[2]) begin
       $display("FAIL: OR Gate mismatch");
       $stop;
     end
-    if (^SW[1:0] !== LED[3]) begin
+    if (~^SW[1:0] !== LED[3]) begin // if (^SW[1:0] !== LED[3]) begin
       $display("FAIL: XOR Gate mismatch");
       $stop;
     end

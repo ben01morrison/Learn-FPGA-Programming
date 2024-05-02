@@ -26,6 +26,8 @@ module tb;
   always @(SW, LED) begin
     if (sum !== LED) begin
       $display("FAIL: Addition mismatch");
+      $display("Expected: %3b", sum);
+      $display("Recieved: %3b", LED);
       $stop;
     end
   end 
