@@ -21,7 +21,8 @@ module project_2
   logic [BITS-1:0]       AD_LED;
   logic [BITS-1:0]       SB_LED;
   logic [BITS-1:0]       MULT_LED;
-
+  // module_name #(.module_param(ext_param), ...) instance_name (.module_conn(ext_conn), ...)
+  // note .* means that module and external module have same connection name.
   leading_ones #(.SELECTOR(SELECTOR), .BITS(BITS)) u_lo (.*, .LED(LO_LED));
   add_sub      #(.SELECTOR("ADD"),    .BITS(BITS)) u_ad (.*, .LED(AD_LED));
   add_sub      #(.SELECTOR("SUB"),    .BITS(BITS)) u_sb (.*, .LED(SB_LED));

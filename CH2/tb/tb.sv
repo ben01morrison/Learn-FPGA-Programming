@@ -83,7 +83,7 @@ module tb;
           end
         end
       end
-      $display("Setting switches to %16b", SW);
+      $display("%3d : Setting switches to %16b", i,  SW);
         #100;
     end
     SW = '0;
