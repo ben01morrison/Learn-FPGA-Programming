@@ -56,26 +56,26 @@ module counting_buttons
         else button_down <= '0;
       end
     end else if (ASYNC_BUTTON == "DEBOUNCE") begin : g_CLOCK
-      (* ASYNC_REG = "TRUE", mark_debug = "true" *) logic [2:0] button_sync;
-      (* mark_debug = "true" *) logic       counter_en;
-      (* mark_debug = "true" *) logic [7:0] counter;
+      (* ASYNC_REG = "TRUE", mark_debug = "true" *) logic [2:0] button_sync; //Marg the input as Asynchronous for synthesis.
+      (* mark_debug = "true" *) logic       counter_en; //mar_debug guarentees that the counter_en net will be synthesized
+      (* mark_debug = "true" *) logic [7:0] counter;    // available for debug even if it can be optimised out.
 
       always @(posedge clk) begin
         button_down <= '0;
-        button_sync <= button_sync << 1 | BTNC;
-        if (button_sync[2:1] == 2'b01) counter_en <= '1;
-        else if (~button_sync[1])      counter_en <= '0;
+        button_sync <= button_sync << 1 | BTNC; // shift the value left by 1 and add BTNC state to last bit. ex. 110 -> 10x where x is BTNC state.
+        if (button_sync[2:1] == 2'b01) counter_en <= '1; // If an edge is detected. ex. 011 = _-- enable the counter
+        else if (~button_sync[1])      counter_en <= '0; // else if a 0 has been detected, dissable the counter.
 
         if (counter_en) begin
           counter <= counter + 1'b1;
-          if (&counter) begin
-            counter_en <= '0;
-            counter    <= '0;
-            button_down <= '1;
+          if (&counter) begin // &counter means and all bitwise values of counter.
+            counter_en <= '0; // dissable counter
+            counter    <= '0; // reset counter
+            button_down <= '1; // button has been pressed
           end
         end
       end
-    end else begin : g_NOCLOCK
+    end else begin : g_NOCLOCK //Simple but stupid way for checking for pos edge. DONT DO THIS.
       always @(posedge clk) begin
         last_button                             <= button;
         button                                  <= BTNC;
