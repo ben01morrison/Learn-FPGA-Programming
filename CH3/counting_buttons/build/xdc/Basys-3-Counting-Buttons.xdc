@@ -73,7 +73,7 @@ set_property -dict { PACKAGE_PIN V7 IOSTANDARD LVCMOS33 } [get_ports { cathode[7
 
 ## Buttons
 ## Center button
-# set_property -dict { PACKAGE_PIN U18 IOSTANDARD LVCMOS33 } [get_ports { BUTTONS[0] }]
+ set_property -dict { PACKAGE_PIN U18 IOSTANDARD LVCMOS33 } [get_ports { CENTER_BUTTON }]
 ## Up button
  set_property -dict { PACKAGE_PIN T18 IOSTANDARD LVCMOS33 } [get_ports { BUTTONS[0] }]
 ## Left button
