@@ -4,10 +4,10 @@
 <!-- Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.                   -->
 <!-- Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.   -->
 
-<Project Product="Vivado" Version="7" Minor="67" Path="C:/Users/ben01/Documents/GitHub/FPGA/Learn-FPGA-Programming/direction_lock/direction_lock.xpr">
+<Project Product="Vivado" Version="7" Minor="67" Path="C:/Users/ben01/Documents/GitHub/FPGA/Learn-FPGA-Programming/scroll_lock/scroll_lock.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
-    <Option Name="Id" Val="bfbb8390ddad46d087257c8c8ebb0c48"/>
+    <Option Name="Id" Val="867251d31d904d7ab0e974fbc28e546a"/>
     <Option Name="Part" Val="xc7a35tcpg236-1"/>
     <Option Name="CompiledLibDir" Val="$PCACHEDIR/compile_simlib"/>
     <Option Name="CompiledLibDirXSim" Val=""/>
@@ -114,7 +114,7 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/new/direction_lock.sv">
+      <File Path="$PSRCDIR/sources_1/new/scroll_lock.sv">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
@@ -123,7 +123,7 @@
       </File>
       <Config>
         <Option Name="DesignMode" Val="RTL"/>
-        <Option Name="TopModule" Val="direction_lock"/>
+        <Option Name="TopModule" Val="scroll_lock"/>
         <Option Name="TopAutoSet" Val="TRUE"/>
       </Config>
     </FileSet>
