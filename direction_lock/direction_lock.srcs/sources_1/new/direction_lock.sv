@@ -1,24 +1,5 @@
-`timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 08/27/2024 02:00:44 PM
-// Design Name: 
-// Module Name: direction_lock
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
 
+`timescale 1ns / 1ps
 
 module direction_lock
     #
@@ -31,21 +12,22 @@ module direction_lock
     input wire                        clk,
     input wire                        CPU_RESETSW, //RESET SW
     input wire [3:0]                  BUTTONS,
-    // output logic [NUM_SEGMENTS-1:0][3:0] encoded, // How do I only include these two outputs for simulation
-    // output logic                    pressed,
     output logic [NUM_SEGMENTS-1:0]   anode, // 7 segment display ports
     output logic [7:0]                cathode,
-    output logic [15:0]               LED,
-    output logic [1:0]                         input_index, //RM
-    output logic [NUM_SEGMENTS-1:0][3:0]       encoded // REMOVE FOR IMPLAMENTATION
+    output logic [15:0]               LED
+    //output logic [1:0]                         input_index, //REMOVE FOR IMPLAMENTATION
+    //output logic [NUM_SEGMENTS-1:0][3:0]       encoded, // RM
+    //output logic [3:0]                         pressed, //RM
+    //output logic [3:0][3:0]                    user_input, //RM
+    //output logic [3:0][3:0]                    pwd //R
     ); 
 
-    
+
 
     //7 Segment Setup
 
     logic [NUM_SEGMENTS-1:0]            digit_point;
-    //logic [NUM_SEGMENTS-1:0][3:0]       encoded;
+    logic [NUM_SEGMENTS-1:0][3:0]       encoded;
     logic [3:0]                         pressed;
     logic [3:0][3:0]                    user_input; 
     logic [3:0][3:0]                    pwd; 
@@ -72,7 +54,8 @@ module direction_lock
      debouncer
      #
      (
-        .POS_EDGE (1)
+        .POS_EDGE (1),
+        .CTR_BITS (8)
      )
      button[4]
      (
@@ -88,45 +71,43 @@ initial begin
     encoded <= 0;
     input_index <= 0;
     user_input <= 0;
-    LED <= 16'h000F;
-    pwd[0] <= 4'h4; //pwd: 1,2,3,4 up left right down
-    pwd[1] <= 4'h3;
-    pwd[2] <= 4'h2;
-    pwd[3] <= 4'h1;
+    LED <= 16'h00FF;
+    digit_point <= '0;
+    pwd <= 16'h1234; //pwd: 1,2,3,4 up left right down
 end
     
  
-     always @(posedge clk) begin
+always @(posedge clk) begin
         
         if(CPU_RESETSW) begin
                 encoded <= 0;
                 input_index <= 0;
                 user_input <= 0;
                 LED <= 16'h00FF;
-                pwd[0] <= 2'b11; //pwd: 3, 2, 1, 0 or up, right, down, left.
-                pwd[1] <= 2'b10;
-                pwd[2] <= 2'b01;
-                pwd[3] <= 2'b00;
+                pwd <= 16'h1234;
         end  
         
-        if(pressed != 0) begin //FIXME
+        if(pressed != 4'b0000) begin //FIXME
             //Store User input
-            $display("Pressed: ");
-            $display(pressed);
+
             case(pressed)
-                4'b0001: user_input[input_index] <= 4'h4; //Up
-                4'b0010: user_input[input_index] <= 4'h3; //Right
-                4'b0100: user_input[input_index] <= 4'h2; //Down
-                4'b1000: user_input[input_index] <= 4'h1; //Left
+                4'b0001: user_input[input_index] = 4'h1; //Up
+                4'b0010: user_input[input_index] = 4'h2; //Right
+                4'b0100: user_input[input_index] = 4'h3; //Down
+                4'b1000: user_input[input_index] = 4'h4; //Left
             endcase
-            $display("User input: ");
-            $display(user_input);
+            encoded[0] <= user_input[3];
+            encoded[1] <= user_input[2];
+            encoded[2] <= user_input[1];
+            encoded[3] <= user_input[0];
             input_index <= input_index + 1;
             //update seven segment
-            encoded <= user_input;
+            
             
             //check unlock
             if(input_index == 3) begin
+            $display(user_input);
+            $display(pwd);
                 if(user_input == pwd) begin
                     LED <= '1;
                 end else begin
