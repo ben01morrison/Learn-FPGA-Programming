@@ -45,7 +45,6 @@ module debouncer
         //$display("edge detected");
         end // If an edge is detected. ex. 011 = _-- enable the counter
         
-        
         else if (~button_sync[1])      counter_en <= 1'b0; // else if a 0 has been detected, dissable the counter.
 
         if (counter_en) begin
